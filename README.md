@@ -1,63 +1,64 @@
-# Book API
+# Books REST API
 
-This is a simple RESTful API built with **Node.js** and **Express** for managing books. The API allows you to perform basic CRUD operations (Create, Read, Update, Delete) on a collection of books.
+![CI](https://github.com/Lukegbb/books-rest-api-node/actions/workflows/ci.yml/badge.svg)
 
-Este é um simples API RESTful criada com **Node.js** e **Express** para gerenciar livros. A API permite realizar operações básicas de CRUD (Criar, Ler, Atualizar, Deletar) em uma coleção de livros.
+A small REST API for managing a list of books, built with **Node.js and Express**.
+It started as a basic CRUD exercise and I've since added validation, filtering, pagination and automated tests.
 
-## Features / Funcionalidades
+## Features
 
-- **GET /livros**: List all books / Listar todos os livros
-- **GET /livros/:id**: Get a specific book by ID / Obter um livro específico por ID
-- **POST /livros**: Add a new book / Adicionar um novo livro
-- **PUT /livros/:id**: Update a specific book / Atualizar um livro específico
-- **DELETE /livros/:id**: Delete a book by ID / Deletar um livro pelo ID
+- Full CRUD: `GET`, `POST`, `PUT` (replace) and `PATCH` (partial update), `DELETE`
+- Input validation with clear error messages (`400` with a list of errors)
+- Filter by author, search by title or author, sort by year or title
+- Pagination (`page` and `limit`)
+- Proper `404` responses and handling of malformed JSON
+- App and data store kept separate, so the in-memory store could be replaced by a database
+- Tests with Jest + Supertest, running on GitHub Actions
 
-## Prerequisites / Pré-requisitos
-
-Before running this project, make sure you have the following installed:
-
-Antes de rodar este projeto, certifique-se de ter o seguinte instalado:
-
-- **Node.js**
-- **npm**
-
-
-
-1. Navigate into the project directory:
-
-    Navegue até o diretório do projeto:
-
-    ```bash
-    cd book-api
-    ```
-
-2. Install the dependencies:
-
-    Instale as dependências:
-
-    ```bash
-    npm install
-    ```
-
-3. Start the server:
-
-    Inicie o servidor:
-
-    ```bash
-    node index.js
-    ```
-
-    The server will be running on `http://localhost:3000`. / O servidor estará rodando em `http://localhost:3000`.
-
-## API Endpoints / Endpoints da API
-
-### 1. **GET /livros**
-
-This endpoint returns a list of all books.
-
-Este endpoint retorna uma lista de todos os livros.
-
-Example:
+## Getting started
 
 ```bash
-curl http://localhost:3000/livros
+npm install
+npm start          # http://localhost:3000
+npm test
+```
+
+## Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/books` | List books. Query params: `author`, `search`, `sort` (`year`/`title`), `page`, `limit` |
+| GET | `/books/:id` | Get one book |
+| POST | `/books` | Create a book |
+| PUT | `/books/:id` | Replace a book |
+| PATCH | `/books/:id` | Update some fields |
+| DELETE | `/books/:id` | Delete a book |
+
+### Example
+
+```bash
+curl -X POST http://localhost:3000/books \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Dubliners", "author": "James Joyce", "year": 1914}'
+```
+
+```json
+{ "id": 5, "title": "Dubliners", "author": "James Joyce", "year": 1914 }
+```
+
+Validation error example:
+
+```json
+{ "errors": ["title is required", "author is required"] }
+```
+
+## Project structure
+
+```
+├── src/
+│   ├── app.js      # routes, validation, error handling
+│   ├── store.js    # in-memory data store
+│   └── server.js   # starts the HTTP server
+└── tests/
+    └── books.test.js
+```

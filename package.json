@@ -1,15 +1,24 @@
 {
-  "name": "api-livros",
-  "version": "1.0.0",
-  "description": "API RESTful para gerenciamento de livros",
-  "main": "index.js",
+  "name": "books-rest-api-node",
+  "version": "2.0.0",
+  "description": "REST API for managing books, built with Node.js and Express",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   },
-  "author": "Seu Nome",
-  "license": "ISC"
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "author": "Lucas Guilherme Brito",
+  "license": "MIT"
 }
